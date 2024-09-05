@@ -34,8 +34,8 @@ public class GameBoard extends JPanel implements ActionListener {
     private boolean upDirection = false;
     private boolean downDirection = false;
     private boolean space = true;
+    private boolean change = false;
     private boolean inGame = true;    // Game state flag
-    private Graphics g;
     private Color scol = Color.green;
     private Color acol = Color.red;
 
@@ -170,8 +170,7 @@ public class GameBoard extends JPanel implements ActionListener {
     private void checkCollision() {
 
         for (int z = dots; z > 0; z--) {
-
-            if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
+            if ((x[0] == x[z]) && (y[0] == y[z])) {
                 inGame = false;
             }
         }
@@ -205,7 +204,7 @@ public class GameBoard extends JPanel implements ActionListener {
         r = (int) (Math.random() * RAND_POS);
         apple_y = ((r * DOT_SIZE));
 
-        for(int i=0;i<x.length;i++){
+        for(int i=0;i<dots;i++){
             if(x[i]==apple_x && y[i]==apple_y){
                 createApple();
             }
@@ -221,6 +220,7 @@ public class GameBoard extends JPanel implements ActionListener {
             move();
         }
         repaint();
+        change = false;
     }
 
     private class TAdapter extends KeyAdapter {
@@ -230,28 +230,32 @@ public class GameBoard extends JPanel implements ActionListener {
 
             int key = e.getKeyCode();
 
-            if ((key == KeyEvent.VK_LEFT) && (!rightDirection)) {
+            if ((key == KeyEvent.VK_LEFT) && (!rightDirection) && (!change)) {
                 leftDirection = true;
                 upDirection = false;
                 downDirection = false;
+                change = true;
             }
 
-            if ((key == KeyEvent.VK_RIGHT) && (!leftDirection)) {
+            if ((key == KeyEvent.VK_RIGHT) && (!leftDirection) && (!change)) {
                 rightDirection = true;
                 upDirection = false;
                 downDirection = false;
+                change = true;
             }
 
-            if ((key == KeyEvent.VK_UP) && (!downDirection)) {
+            if ((key == KeyEvent.VK_UP) && (!downDirection) && (!change)) {
                 upDirection = true;
                 rightDirection = false;
                 leftDirection = false;
+                change = true;
             }
 
-            if ((key == KeyEvent.VK_DOWN) && (!upDirection)) {
+            if ((key == KeyEvent.VK_DOWN) && (!upDirection) && (!change)) {
                 downDirection = true;
                 rightDirection = false;
                 leftDirection = false;
+                change = true;
             }
             if (key == KeyEvent.VK_SPACE){
                 if(space && inGame){
