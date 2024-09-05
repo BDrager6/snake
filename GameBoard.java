@@ -36,6 +36,8 @@ public class GameBoard extends JPanel implements ActionListener {
     private boolean space = true;
     private boolean inGame = true;    // Game state flag
     private Graphics g;
+    private Color scol = Color.green;
+    private Color acol = Color.red;
 
     private Timer timer;              // Timer to control game loop
 
@@ -46,7 +48,7 @@ public class GameBoard extends JPanel implements ActionListener {
     private void initBoard() {
 
         addKeyListener(new TAdapter());
-        setBackground(Color.gray);
+        setBackground(Color.darkGray);
         setFocusable(true);
 
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
@@ -80,15 +82,15 @@ public class GameBoard extends JPanel implements ActionListener {
         if (inGame) {
 
             // Draw the apple
-            g.setColor(Color.red);
+            g.setColor(acol);
             g.fillRect(apple_x, apple_y, DOT_SIZE, DOT_SIZE);
 
             // Draw the snake
             for (int z = 0; z < dots; z++) {
                 if (z == 0) {
-                    g.setColor(Color.green); // Head of the snake
+                    g.setColor(scol); // Head of the snake
                 } else {
-                    g.setColor(Color.green); // Body of the snake
+                    g.setColor(scol); // Body of the snake
                 }
                 g.fillRect(x[z], y[z], DOT_SIZE, DOT_SIZE);
             }
@@ -104,6 +106,7 @@ public class GameBoard extends JPanel implements ActionListener {
         Font small = new Font("Helvetica", Font.BOLD, 28);
         FontMetrics metr = getFontMetrics(small);
 
+        darkScreen();
         g.setColor(Color.white);
         g.setFont(small);
         g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
@@ -111,13 +114,20 @@ public class GameBoard extends JPanel implements ActionListener {
 
     private void gamePause(Graphics g) {
 
-        String msg = "Game Paused";
+        String msg = "Paused";
         Font small = new Font("Helvetica", Font.BOLD, 28);
         FontMetrics metr = getFontMetrics(small);
 
+        darkScreen();
         g.setColor(Color.white);
         g.setFont(small);
-        g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
+        g.drawString(msg, (B_WIDTH - metr.stringWidth(msg))/2, B_HEIGHT/2);
+    }
+
+    private void darkScreen(){
+        setBackground(Color.darkGray.darker());
+        scol = Color.green.darker();
+        acol = Color.red.darker(); 
     }
 
     private void checkApple() {
@@ -129,6 +139,9 @@ public class GameBoard extends JPanel implements ActionListener {
     }
 
     private void move() {
+        scol = Color.green;
+        acol = Color.red;
+        setBackground(Color.darkGray);
 
         for (int z = dots; z > 0; z--) {
             x[z] = x[(z - 1)];
@@ -195,7 +208,6 @@ public class GameBoard extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (inGame && space) {
-
             checkApple();
             checkCollision();
             move();
@@ -234,7 +246,7 @@ public class GameBoard extends JPanel implements ActionListener {
                 leftDirection = false;
             }
             if (key == KeyEvent.VK_SPACE){
-                if(space){
+                if(space && inGame){
                     space = false;
                     g = getGraphics();
                     gamePause(g);
