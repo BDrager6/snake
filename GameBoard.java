@@ -79,7 +79,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
     private void doDrawing(Graphics g) {
 
-        if (inGame) {
+        if (inGame && space) {
 
             // Draw the apple
             g.setColor(acol);
@@ -95,6 +95,8 @@ public class GameBoard extends JPanel implements ActionListener {
                 g.fillRect(x[z], y[z], DOT_SIZE, DOT_SIZE);
             }
 
+        } else if (inGame && !space){
+            gamePause(g);
         } else {
             gameOver(g);
         }
@@ -211,8 +213,8 @@ public class GameBoard extends JPanel implements ActionListener {
             checkApple();
             checkCollision();
             move();
-            repaint();
         }
+        repaint();
     }
 
     private class TAdapter extends KeyAdapter {
@@ -248,8 +250,6 @@ public class GameBoard extends JPanel implements ActionListener {
             if (key == KeyEvent.VK_SPACE){
                 if(space && inGame){
                     space = false;
-                    g = getGraphics();
-                    gamePause(g);
                 } else {
                     space = true;
                 }
