@@ -33,7 +33,9 @@ public class GameBoard extends JPanel implements ActionListener {
     private boolean rightDirection = true;
     private boolean upDirection = false;
     private boolean downDirection = false;
+    private boolean space = true;
     private boolean inGame = true;    // Game state flag
+    private Graphics g;
 
     private Timer timer;              // Timer to control game loop
 
@@ -99,6 +101,17 @@ public class GameBoard extends JPanel implements ActionListener {
     private void gameOver(Graphics g) {
 
         String msg = "Game Over";
+        Font small = new Font("Helvetica", Font.BOLD, 28);
+        FontMetrics metr = getFontMetrics(small);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
+    }
+
+    private void gamePause(Graphics g) {
+
+        String msg = "Game Paused";
         Font small = new Font("Helvetica", Font.BOLD, 28);
         FontMetrics metr = getFontMetrics(small);
 
@@ -181,14 +194,13 @@ public class GameBoard extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (inGame) {
+        if (inGame && space) {
 
             checkApple();
             checkCollision();
             move();
+            repaint();
         }
-
-        repaint();
     }
 
     private class TAdapter extends KeyAdapter {
@@ -220,6 +232,15 @@ public class GameBoard extends JPanel implements ActionListener {
                 downDirection = true;
                 rightDirection = false;
                 leftDirection = false;
+            }
+            if (key == KeyEvent.VK_SPACE){
+                if(space){
+                    space = false;
+                    g = getGraphics();
+                    gamePause(g);
+                } else {
+                    space = true;
+                }
             }
         }
     }
