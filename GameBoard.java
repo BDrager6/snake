@@ -204,6 +204,12 @@ public class GameBoard extends JPanel implements ActionListener {
 
         r = (int) (Math.random() * RAND_POS);
         apple_y = ((r * DOT_SIZE));
+
+        for(int i=0;i<x.length;i++){
+            if(x[i]==apple_x && y[i]==apple_y){
+                createApple();
+            }
+        }
     }
 
     @Override
