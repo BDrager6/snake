@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 public class SnakeGame extends JFrame {
 
     public static JPanel sbPanel = new JPanel();
-    private final JFrame window = new JFrame("Snake");
+    public static JFrame window = new JFrame("Snake");
 
     public SnakeGame() {
         sbPanel.add(new ScoreBoard());

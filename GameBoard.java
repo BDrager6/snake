@@ -1,6 +1,6 @@
 package snake;
 
-
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GameBoard extends JPanel implements ActionListener {
-
     private final int B_WIDTH = 600;
     private final int B_HEIGHT = 600;
     private final int DOT_SIZE = 15;  // Size of the grid cell
@@ -46,7 +45,6 @@ public class GameBoard extends JPanel implements ActionListener {
     }
 
     private void initBoard() {
-
         addKeyListener(new TAdapter());
         setBackground(Color.darkGray);
         setFocusable(true);
@@ -56,16 +54,11 @@ public class GameBoard extends JPanel implements ActionListener {
     }
 
     private void initGame() {
-
-        //dots = 3;
-
         for (int z = 0; z < dots; z++) {
             x[z] = 15 - z * DOT_SIZE;
             y[z] = 15;
         }
-
         createApple();
-
         timer = new Timer(DELAY, this);
         timer.start();
     }
@@ -73,17 +66,14 @@ public class GameBoard extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         doDrawing(g);
     }
 
     private void doDrawing(Graphics g) {
-
         if (inGame && space) {
             // Draw the apple
             g.setColor(acol);
             g.fillRect(apple_x, apple_y, DOT_SIZE, DOT_SIZE);
-
             // Draw the snake
             for (int z = 0; z < dots; z++) {
                 if (z == 0) {
@@ -93,7 +83,6 @@ public class GameBoard extends JPanel implements ActionListener {
                 }
                 g.fillRect(x[z], y[z], DOT_SIZE, DOT_SIZE);
             }
-
         } else if (inGame && !space){
             gamePause(g);
         } else {
@@ -102,19 +91,22 @@ public class GameBoard extends JPanel implements ActionListener {
     }
 
     private void gameOver(Graphics g) {
-
-        String msg = "Game Over";
+        String firstmsg = "Game Over";
+        String secmsg = "You Scored: ";
+        String secondmsg = secmsg + dots;
         Font small = new Font("Helvetica", Font.BOLD, 28);
         FontMetrics metr = getFontMetrics(small);
 
         darkScreen();
         g.setColor(Color.white);
         g.setFont(small);
-        g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
+        g.drawString(firstmsg, (B_WIDTH - metr.stringWidth(firstmsg)) / 2, B_HEIGHT / 3);
+        g.drawString(secondmsg, (B_WIDTH - metr.stringWidth(secondmsg)) / 2, B_HEIGHT / 2);
+        SnakeGame.window.remove(SnakeGame.sbPanel);
+        SnakeGame.window.setSize(600, 600);
     }
 
     private void gamePause(Graphics g) {
-
         String msg = "Paused";
         Font small = new Font("Helvetica", Font.BOLD, 28);
         FontMetrics metr = getFontMetrics(small);
@@ -132,7 +124,6 @@ public class GameBoard extends JPanel implements ActionListener {
     }
 
     private void checkApple() {
-
         if ((x[0] == apple_x) && (y[0] == apple_y)) {
             dots++;
             JPanel newsb = new JPanel();
@@ -156,22 +147,18 @@ public class GameBoard extends JPanel implements ActionListener {
         if (leftDirection) {
             x[0] -= DOT_SIZE;
         }
-
         if (rightDirection) {
             x[0] += DOT_SIZE;
         }
-
         if (upDirection) {
             y[0] -= DOT_SIZE;
         }
-
         if (downDirection) {
             y[0] += DOT_SIZE;
         }
     }
 
     private void checkCollision() {
-
         for (int z = dots; z > 0; z--) {
             if ((x[0] == x[z]) && (y[0] == y[z])) {
                 inGame = false;
@@ -181,26 +168,21 @@ public class GameBoard extends JPanel implements ActionListener {
         if (y[0] >= B_HEIGHT) {
             inGame = false;
         }
-
         if (y[0] < 0) {
             inGame = false;
         }
-
         if (x[0] >= B_WIDTH) {
             inGame = false;
         }
-
         if (x[0] < 0) {
             inGame = false;
         }
-
         if (!inGame) {
             timer.stop();
         }
     }
 
     private void createApple() {
-
         int r = (int) (Math.random() * RAND_POS);
         apple_x = ((r * DOT_SIZE));
 
@@ -216,7 +198,6 @@ public class GameBoard extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         if (inGame && space) {
             checkApple();
             checkCollision();
@@ -227,10 +208,8 @@ public class GameBoard extends JPanel implements ActionListener {
     }
 
     private class TAdapter extends KeyAdapter {
-
         @Override
         public void keyPressed(KeyEvent e) {
-
             int key = e.getKeyCode();
 
             if ((key == KeyEvent.VK_LEFT) && (!rightDirection) && (!change)) {
@@ -239,21 +218,18 @@ public class GameBoard extends JPanel implements ActionListener {
                 downDirection = false;
                 change = true;
             }
-
             if ((key == KeyEvent.VK_RIGHT) && (!leftDirection) && (!change)) {
                 rightDirection = true;
                 upDirection = false;
                 downDirection = false;
                 change = true;
             }
-
             if ((key == KeyEvent.VK_UP) && (!downDirection) && (!change)) {
                 upDirection = true;
                 rightDirection = false;
                 leftDirection = false;
                 change = true;
             }
-
             if ((key == KeyEvent.VK_DOWN) && (!upDirection) && (!change)) {
                 downDirection = true;
                 rightDirection = false;
