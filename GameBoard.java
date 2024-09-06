@@ -20,12 +20,12 @@ public class GameBoard extends JPanel implements ActionListener {
     private final int DOT_SIZE = 15;  // Size of the grid cell
     private final int ALL_DOTS = 900; // Maximum number of possible dots on the board
     private final int RAND_POS = 29;  // Random position generator constraint
-    private final int DELAY = 60;    // Delay for the game loop (controls speed)
+    public static final int DELAY = 60;    // Delay for the game loop (controls speed)
 
     private final int x[] = new int[ALL_DOTS]; // X coordinates of the snake's body
     private final int y[] = new int[ALL_DOTS]; // Y coordinates of the snake's body
 
-    private int dots;                 // Current number of dots (snake's length)
+    public static int dots = 3;                 // Current number of dots (snake's length)
     private int apple_x;              // X coordinate of the apple
     private int apple_y;              // Y coordinate of the apple
 
@@ -39,7 +39,7 @@ public class GameBoard extends JPanel implements ActionListener {
     private Color scol = Color.green;
     private Color acol = Color.red;
 
-    private Timer timer;              // Timer to control game loop
+    public static Timer timer;              // Timer to control game loop
 
     public GameBoard() {
         initBoard();
@@ -50,14 +50,14 @@ public class GameBoard extends JPanel implements ActionListener {
         addKeyListener(new TAdapter());
         setBackground(Color.darkGray);
         setFocusable(true);
-
+        setBorder(getBorder());
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         initGame();
     }
 
     private void initGame() {
 
-        dots = 3;
+        //dots = 3;
 
         for (int z = 0; z < dots; z++) {
             x[z] = 15 - z * DOT_SIZE;
@@ -80,7 +80,6 @@ public class GameBoard extends JPanel implements ActionListener {
     private void doDrawing(Graphics g) {
 
         if (inGame && space) {
-
             // Draw the apple
             g.setColor(acol);
             g.fillRect(apple_x, apple_y, DOT_SIZE, DOT_SIZE);
@@ -136,6 +135,10 @@ public class GameBoard extends JPanel implements ActionListener {
 
         if ((x[0] == apple_x) && (y[0] == apple_y)) {
             dots++;
+            JPanel newsb = new JPanel();
+            newsb.add(new ScoreBoard());
+            SnakeGame.sbPanel.add(newsb);
+            SnakeGame.sbPanel.repaint();
             createApple();
         }
     }
