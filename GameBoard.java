@@ -10,6 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -37,6 +40,7 @@ public class GameBoard extends JPanel implements ActionListener {
     private boolean inGame = true;    // Game state flag
     private Color scol = Color.green;
     private Color acol = Color.red;
+    private JFrame window;
 
     public static Timer timer;              // Timer to control game loop
 
@@ -54,6 +58,7 @@ public class GameBoard extends JPanel implements ActionListener {
     }
 
     private void initGame() {
+        dots = 3;
         for (int z = 0; z < dots; z++) {
             x[z] = 15 - z * DOT_SIZE;
             y[z] = 15;
@@ -241,6 +246,15 @@ public class GameBoard extends JPanel implements ActionListener {
                     space = false;
                 } else {
                     space = true;
+                }
+            }
+            if(key == KeyEvent.VK_ENTER && !inGame){
+                SnakeGame.window.dispose();
+                try{
+                    Runtime.getRuntime().exec("javac C:\\Users\\BWDra\\OneDrive\\Documents\\Code\\Java\\snake\\SnakeGame.java").waitFor();
+                    Runtime.getRuntime().exec("java C:\\Users\\BWDra\\OneDrive\\Documents\\Code\\Java\\snake\\SnakeGame.java");
+                } catch (IOException | InterruptedException err) {
+                    err.printStackTrace();
                 }
             }
         }

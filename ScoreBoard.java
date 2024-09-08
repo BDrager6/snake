@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 public class ScoreBoard extends JPanel {
     private static final int width = 600;
     private static final int height = 100;
-    private static int score = 0;
+    private static int score = GameBoard.dots;
     
     public ScoreBoard(){
         initScoreBoard();

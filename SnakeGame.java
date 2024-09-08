@@ -9,7 +9,7 @@ public class SnakeGame extends JFrame {
     public static JPanel sbPanel = new JPanel();
     public static JFrame window = new JFrame("Snake");
 
-    public SnakeGame() {
+    public SnakeGame(JFrame window, JPanel sbPanel) {
         sbPanel.add(new ScoreBoard());
         window.add(new GameBoard());
         window.setTitle("Snake Game");
@@ -23,6 +23,6 @@ public class SnakeGame extends JFrame {
     }
 
     public static void main(String[] args) {
-        new SnakeGame();
+        new SnakeGame(window, sbPanel);
     }
 }
