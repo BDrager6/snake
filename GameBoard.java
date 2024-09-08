@@ -1,6 +1,5 @@
 package snake;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -11,8 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -40,7 +37,6 @@ public class GameBoard extends JPanel implements ActionListener {
     private boolean inGame = true;    // Game state flag
     private Color scol = Color.green;
     private Color acol = Color.red;
-    private JFrame window;
 
     public static Timer timer;              // Timer to control game loop
 
@@ -98,6 +94,7 @@ public class GameBoard extends JPanel implements ActionListener {
     private void gameOver(Graphics g) {
         String firstmsg = "Game Over";
         String secmsg = "You Scored: ";
+        String thirdmsg = "Press Enter To Play Again";
         String secondmsg = secmsg + dots;
         Font small = new Font("Helvetica", Font.BOLD, 28);
         FontMetrics metr = getFontMetrics(small);
@@ -105,8 +102,9 @@ public class GameBoard extends JPanel implements ActionListener {
         darkScreen();
         g.setColor(Color.white);
         g.setFont(small);
-        g.drawString(firstmsg, (B_WIDTH - metr.stringWidth(firstmsg)) / 2, B_HEIGHT / 3);
-        g.drawString(secondmsg, (B_WIDTH - metr.stringWidth(secondmsg)) / 2, B_HEIGHT / 2);
+        g.drawString(firstmsg, (B_WIDTH - metr.stringWidth(firstmsg)) / 2, B_HEIGHT / 4);
+        g.drawString(secondmsg, (B_WIDTH - metr.stringWidth(secondmsg)) / 2, B_HEIGHT / 3);
+        g.drawString(thirdmsg, (B_WIDTH - metr.stringWidth(thirdmsg)) / 2, B_HEIGHT / 2);
         SnakeGame.window.remove(SnakeGame.sbPanel);
         SnakeGame.window.setSize(600, 600);
     }
